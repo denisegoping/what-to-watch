@@ -1,39 +1,72 @@
 import React from 'react';
 import Table from '@material-ui/core/Table'
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import { TableBody, TableCell, TableContainer, TableRow, TableHead, TextField, Button } from '@material-ui/core';
-var RowHandler = require('./rowData.tsx').RowHandler;
+import { RowData } from '../../ducks/tableData';
+const tableDataSelectors = require('../../ducks/tableData.tsx').tableDataSelectors;
+var tableDataActions = require('../../ducks/tableData.tsx').tableDataActions;
 
-export function MusicTable() {
-    const rows = RowHandler();
+export function MovieTable() {
+    const [rowsHaveChanged, setRowsHaveChanged] = useState(false);
+    const [movieState, setMovieState] = useState('');
+    const [directorState, setDirectorState] = useState('');
+    const [yearState, setYearState] = useState('');
+    const [genreState, setGenreState] = useState('');
+
+    let tableData: RowData[] = useSelector(tableDataSelectors.selectTableData);
+    const [rows, setRows] = useState(tableData);
+    const dispatch = useDispatch();
+
+    useEffect(() => {        
+        setRows(tableData);
+      }, [tableData])
+
+    useEffect(() => {
+        dispatch(tableDataActions.getTableDataRequest());
+    }, []);
+
+    useEffect(() => {
+        console.log('updating');
+        if (movieState !== '' && directorState !== '' && yearState !== '' && genreState !== '') {
+            dispatch(tableDataActions.addTableDataRequest({movieTitle: movieState, director: directorState, year: yearState, genre: genreState}));
+        }
+        setMovieState('');
+        setDirectorState('');
+        setYearState('');
+        setGenreState('');
+        setRowsHaveChanged(false);
+    }, [rowsHaveChanged]);
+
 
     return (
     <TableContainer>
         <Table stickyHeader>
         <TableHead>
             <TableRow>
-                <TableCell>Song Title</TableCell>
-                <TableCell align="right">Album</TableCell>
-                <TableCell align="right">Artist</TableCell>
+                <TableCell>Movie</TableCell>
+                <TableCell align="right">Director</TableCell>
+                <TableCell align="right">Year</TableCell>
                 <TableCell align="right">Genre</TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
             {rows.map((row) => (
                 <TableRow>
-                    <TableCell component="th" scope="row">{row.songName}</TableCell>
-                    <TableCell align="right">{row.album}</TableCell>
-                    <TableCell align="right">{row.artist}</TableCell>
+                    <TableCell component="th" scope="row">{row.movieTitle}</TableCell>
+                    <TableCell align="right">{row.director}</TableCell>
+                    <TableCell align="right">{row.year}</TableCell>
                     <TableCell align="right">{row.genre}</TableCell>
                 </TableRow>
             ))}
             <TableRow>
                     <TableCell component="th" scope="row">
-                        <TextField></TextField>
+                        <TextField value={movieState} onChange={(c) => setMovieState(c.target.value)}></TextField>
                     </TableCell>
-                    <TableCell align="right"><TextField></TextField></TableCell>
-                    <TableCell align="right"><TextField></TextField></TableCell>
-                    <TableCell align="right"><TextField></TextField></TableCell>
-                    <Button>Submit Song</Button>
+                    <TableCell align="right"><TextField value={directorState} onChange={(c) => setDirectorState(c.target.value)}></TextField></TableCell>
+                    <TableCell align="right"><TextField value={yearState} onChange={(c) => setYearState(c.target.value)}></TextField></TableCell>
+                    <TableCell align="right"><TextField value={genreState} onChange={(c) => setGenreState(c.target.value)}></TextField></TableCell>
+                    <Button onClick={() => setRowsHaveChanged(true)}>Submit Movie</Button>
             </TableRow>
         </TableBody>
     </Table>

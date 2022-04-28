@@ -5,24 +5,31 @@ import { useSelector, useDispatch } from 'react-redux'
 var tableDataActions = require('../../ducks/tableData.tsx').tableDataActions;
 const tableDataSelectors = require('../../ducks/tableData.tsx').tableDataSelectors;
 
-export const RowHandler = () => {
-    console.log('in here once');
+// export const RowHandler = () => {
+//     console.log('in the get row handler');
     
-    const tableData = useSelector(tableDataSelectors.selectTableData);
+//     const tableData = useSelector(tableDataSelectors.selectTableData);
+//     const dispatch = useDispatch();
+
+//     useEffect(() => {
+//         dispatch(tableDataActions.getTableDataRequest());
+//     }, []);
+
+//     return tableData? tableData : [];
+// }
+
+export const AddRowDataHandler = (
+    songTitle: string,
+    album: string,
+    artist: string,
+    genre: string,
+) => {
+    console.log('in the add row handler');
+
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(tableDataActions.getTableDataRequest());
-    }, []);
-
-    return tableData? tableData : [];
+    dispatch(tableDataActions.addTableDataRequest({songTitle, album, artist, genre}));
+    return(useSelector(tableDataSelectors.selectTableData))
 }
 
-const addRowData = (
-    songTitle,
-    album,
-    artist,
-    genre,
-) => {
-    return {songTitle, album, artist, genre};
-}
+// export const currentRows = RowHandler();

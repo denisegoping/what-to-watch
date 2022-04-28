@@ -1,6 +1,6 @@
 import { fork, all } from "redux-saga/effects";
 
-const tableDataSagaBuilder = require("./components/sagas/tableData.tsx").tableDataSagaBuilder;
+const tableDataSagaBuilder = require("./sagas/tableData.tsx").tableDataSagaBuilder;
 
 const tableDataSaga = tableDataSagaBuilder();
 

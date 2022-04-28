@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 
-var MusicTable = require("../../Table/index.tsx").MusicTable;
+var MovieTable = require("../../Table/index.tsx").MovieTable;
 
 const PageContainer = styled.div`
   display: flex;
@@ -33,12 +33,13 @@ export const LandingPage = () => {
         <PageContainer>
           <HeaderContainer>
             <WelcomeMessage>Welcome to
-              <Name>Neighbourhood Nods!</Name>
+              <Name>What to Watch!</Name>
             </WelcomeMessage>
           </HeaderContainer>
-           <MusicTable/>
+           <MovieTable/>
         </PageContainer>
     )
 }
 
-// export default LandingPage;
+// TODO: fix the multiple renders
+// try adding the only 25 renders with 2 buttons to go back and forth

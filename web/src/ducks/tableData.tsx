@@ -7,9 +7,9 @@ export type TableData = {
 }
 
 export type RowData = {
-    songName: string,
-    album: string,
-    artist: string,
+    movieTitle: string,
+    director: string,
+    year: string,
     genre: string,
 }
 
@@ -19,12 +19,16 @@ export const initialState: TableData = {
     error: null,
 };
 
-export type TableDataSuccessPayload = {
+export type GetTableDataSuccessPayload = {
     tableData: [];
 }
 
 export type TableDataErrorPayload = {
     error: Error;
+}
+
+export type AddTableDataRequestPayload = {
+    rowData: RowData;
 }
 
 const tableData = createSlice({
@@ -38,13 +42,39 @@ const tableData = createSlice({
         },
         getTableDataSuccess(
             state,
-            action: PayloadAction<TableDataSuccessPayload>
+            action: PayloadAction<GetTableDataSuccessPayload>
         ) {
             state.tableData = action.payload.tableData;
             state.isLoading = false;
             state.error = null;
         },
         getTableDataError(
+            state,
+            action: PayloadAction<TableDataErrorPayload>
+        ) {
+            state.error = action.payload.error;
+            state.isLoading = false;
+        },
+        addTableDataRequest(
+            state,
+            action: PayloadAction<RowData>
+        ) {
+            state.isLoading = true;
+        },
+        addTableDataSuccess(
+            state,
+            action: PayloadAction<AddTableDataRequestPayload>
+        ) {
+            if (state.tableData.length === 25) {
+                state.tableData.shift();
+                state.tableData.push(action.payload.rowData);
+            } else {
+                state.tableData = [...state.tableData, action.payload.rowData];
+            }
+            state.isLoading = false;
+            state.error = null;
+        },
+        addTableDataError(
             state,
             action: PayloadAction<TableDataErrorPayload>
         ) {
