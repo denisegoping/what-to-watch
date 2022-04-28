@@ -4,6 +4,7 @@ export type TableData = {
     tableData: RowData[];
     isLoading: boolean;
     error?: Error | null;
+    isFullTable: boolean;
 }
 
 export type RowData = {
@@ -17,6 +18,7 @@ export const initialState: TableData = {
     tableData: [],
     isLoading: false,
     error: null,
+    isFullTable: false,
 };
 
 export type GetTableDataSuccessPayload = {
@@ -47,6 +49,7 @@ const tableData = createSlice({
             state.tableData = action.payload.tableData;
             state.isLoading = false;
             state.error = null;
+            state.isFullTable = true;
         },
         getTableDataError(
             state,
@@ -65,11 +68,11 @@ const tableData = createSlice({
             state,
             action: PayloadAction<AddTableDataRequestPayload>
         ) {
-            if (state.tableData.length === 25) {
-                state.tableData.shift();
-                state.tableData.push(action.payload.rowData);
+            if (!state.isFullTable && state.tableData.length === 25) {
+                state.tableData.pop();
+                state.tableData.unshift(action.payload.rowData);
             } else {
-                state.tableData = [...state.tableData, action.payload.rowData];
+                state.tableData = [action.payload.rowData, ...state.tableData];
             }
             state.isLoading = false;
             state.error = null;
@@ -80,7 +83,28 @@ const tableData = createSlice({
         ) {
             state.error = action.payload.error;
             state.isLoading = false;
-        }
+        },
+        get25TableDataRequest(
+            state
+        ) {
+            state.isLoading = true;
+        },
+        get25TableDataSuccess(
+            state,
+            action: PayloadAction<GetTableDataSuccessPayload>
+        ) {
+            state.tableData = action.payload.tableData;
+            state.isLoading = false;
+            state.error = null;
+            state.isFullTable = false;
+        },
+        get25TableDataError(
+            state,
+            action: PayloadAction<TableDataErrorPayload>
+        ) {
+            state.error = action.payload.error;
+            state.isLoading = false;
+        },
     }
 });
 

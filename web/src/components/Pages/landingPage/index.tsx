@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 
 var MovieTable = require("../../Table/index.tsx").MovieTable;
@@ -41,5 +41,4 @@ export const LandingPage = () => {
     )
 }
 
-// TODO: fix the multiple renders
-// try adding the only 25 renders with 2 buttons to go back and forth
+// add deleting feature

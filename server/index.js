@@ -35,6 +35,19 @@ app.post('/movieData', (req, res) => {
         res.send(result);
       }
 })})
+
+app.get('/limitedMovieData', (req, res) => {
+  const sqlSelect =
+  'SELECT * FROM movieData ORDER BY ID DESC LIMIT 25';
+
+  db.query(sqlSelect, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+})})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
   })

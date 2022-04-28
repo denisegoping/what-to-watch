@@ -7,24 +7,35 @@ import { RowData } from '../../ducks/tableData';
 const tableDataSelectors = require('../../ducks/tableData.tsx').tableDataSelectors;
 var tableDataActions = require('../../ducks/tableData.tsx').tableDataActions;
 
-export function MovieTable() {
+export function MovieTable() {   
+    
+    const [isFullHistory, setIsFullHistory] = useState(false);
     const [rowsHaveChanged, setRowsHaveChanged] = useState(false);
     const [movieState, setMovieState] = useState('');
     const [directorState, setDirectorState] = useState('');
     const [yearState, setYearState] = useState('');
     const [genreState, setGenreState] = useState('');
-
+    
     let tableData: RowData[] = useSelector(tableDataSelectors.selectTableData);
     const [rows, setRows] = useState(tableData);
     const dispatch = useDispatch();
+
+    let requestAction;
+
+    if (isFullHistory === true) {
+        requestAction = tableDataActions.getTableDataRequest();
+    } else {  
+        requestAction = tableDataActions.get25TableDataRequest();
+    }
 
     useEffect(() => {        
         setRows(tableData);
       }, [tableData])
 
     useEffect(() => {
-        dispatch(tableDataActions.getTableDataRequest());
-    }, []);
+        console.log(requestAction);
+        dispatch(requestAction);
+    }, [isFullHistory]);
 
     useEffect(() => {
         console.log('updating');
@@ -40,6 +51,9 @@ export function MovieTable() {
 
 
     return (
+        <div>
+        <Button onClick={() => setIsFullHistory(false)}>Latest 25 Movies</Button>
+        <Button onClick={() => setIsFullHistory(true)}>Full History</Button>
     <TableContainer>
         <Table stickyHeader>
         <TableHead>
@@ -71,5 +85,6 @@ export function MovieTable() {
         </TableBody>
     </Table>
 </TableContainer>
+</div>
     )
 }

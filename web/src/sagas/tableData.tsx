@@ -3,7 +3,7 @@ import axios from "axios";
 
 const tableDataActions = require("../ducks/tableData.tsx").tableDataActions;
 
-const url = 'http://localhost:5000/movieData';
+const url = 'http://localhost:5000/';
 
 export const tableDataSagaBuilder = () => {
 
@@ -11,7 +11,7 @@ export const tableDataSagaBuilder = () => {
         try {
             const getData = async () => {
                 try {
-                    const { data } = await axios.get(url);
+                    const { data } = await axios.get(url + 'movieData');
                     return data;
                 } catch (e) {
                     console.log(e);
@@ -38,7 +38,7 @@ export const tableDataSagaBuilder = () => {
             const addData = async () => {
                 try {
                     console.log('posting');
-                    const { data } = await axios.post(url, action.payload);
+                    const { data } = await axios.post(url + 'movieData', action.payload);
                     console.log(data);
                     return data;
                 } catch (e) {
@@ -58,6 +58,30 @@ export const tableDataSagaBuilder = () => {
         }
     }
 
+    function* retrieve25TableData() {
+        try {
+            const getData = async () => {
+                try {
+                    const { data } = await axios.get(url + 'limitedMovieData');
+                    return data;
+                } catch (e) {
+                    console.log(e);
+                    return e;
+                }
+            }
+            const data = yield call(getData);
+            console.log(data);
+            yield put(
+                tableDataActions.get25TableDataSuccess({
+                    tableData: data
+                })
+            );
+        } catch (error) {
+            yield put(tableDataActions.get25TableDataError({ error }));
+        }
+    }
+
+
     return function* tableDataSaga() {
         yield takeEvery(
             tableDataActions.getTableDataRequest.toString(),
@@ -67,5 +91,9 @@ export const tableDataSagaBuilder = () => {
             tableDataActions.addTableDataRequest.toString(),
             addTableData
         );
+        yield takeEvery(
+            tableDataActions.get25TableDataRequest.toString(),
+            retrieve25TableData
+        )
     };
 }
