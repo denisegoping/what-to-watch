@@ -60,6 +60,17 @@ app.delete('/movieData/:id', (req, res) => {
       }
 })})
 
+app.get('/movieData/:genre', (req, res) => {
+  var genre = req.params.genre;
+  db.query('SELECT * FROM movieData WHERE genre = (?) ORDER BY ID DESC LIMIT 25', [genre]
+  , (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+})})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
   })

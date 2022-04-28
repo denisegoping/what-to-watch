@@ -108,6 +108,29 @@ export const tableDataSagaBuilder = () => {
         }
     }
 
+    function* retrieveGenreTableData(action) {
+        try {
+            const getData = async () => {
+                try {
+                    const { data } = await axios.get(url + 'movieData/' + action.payload.genre);
+                    return data;
+                } catch (e) {
+                    console.log(e);
+                    return e;
+                }
+            }
+            const data = yield call(getData);
+            console.log(data);
+            yield put(
+                tableDataActions.getGenreTableDataSuccess({
+                    tableData: data
+                })
+            );
+        } catch (error) {
+            yield put(tableDataActions.getGenreTableDataError({ error }));
+        }
+    }
+
     return function* tableDataSaga() {
         yield takeEvery(
             tableDataActions.getTableDataRequest.toString(),
@@ -125,5 +148,9 @@ export const tableDataSagaBuilder = () => {
             tableDataActions.removeTableDataRequest.toString(),
             removeTableData
         );
+        yield takeEvery(
+            tableDataActions.getGenreTableDataRequest.toString(),
+            retrieveGenreTableData
+        )
     };
 }
