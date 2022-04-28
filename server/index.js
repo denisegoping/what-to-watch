@@ -32,6 +32,7 @@ app.post('/movieData', (req, res) => {
       if (err) {
         console.log(err);
       } else {
+        console.log(req.body);
         res.send(result);
       }
 })})
@@ -45,6 +46,17 @@ app.get('/limitedMovieData', (req, res) => {
         console.log(err);
       } else {
         res.json(result);
+      }
+})})
+
+app.delete('/movieData/:id', (req, res) => {
+  var id = req.params.id;
+  db.query('DELETE FROM movieData WHERE ID = (?)', [id],
+   (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
       }
 })})
 

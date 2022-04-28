@@ -81,6 +81,32 @@ export const tableDataSagaBuilder = () => {
         }
     }
 
+    function* removeTableData(action) {
+        console.log('removing data');
+        console.log(action);
+        
+        try {
+            const removeData = async () => {
+                try {
+                    const { data } = await axios.delete(url + 'movieData/'+ action.payload.movieID);
+                    console.log(data);
+                    return data;
+                } catch (e) {
+                    console.log(e);
+                    return e;
+                }
+            }
+            const data = yield call(removeData);
+            console.log(data);
+            yield put(
+                tableDataActions.removeTableDataSuccess(
+                    action.payload
+                )
+            );
+        } catch (error) {
+            yield put(tableDataActions.removeTableDataError({ error }));
+        }
+    }
 
     return function* tableDataSaga() {
         yield takeEvery(
@@ -94,6 +120,10 @@ export const tableDataSagaBuilder = () => {
         yield takeEvery(
             tableDataActions.get25TableDataRequest.toString(),
             retrieve25TableData
-        )
+        );
+        yield takeEvery(
+            tableDataActions.removeTableDataRequest.toString(),
+            removeTableData
+        );
     };
 }

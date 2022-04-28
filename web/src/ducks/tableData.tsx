@@ -8,6 +8,7 @@ export type TableData = {
 }
 
 export type RowData = {
+    ID: number,
     movieTitle: string,
     director: string,
     year: string,
@@ -99,6 +100,28 @@ const tableData = createSlice({
             state.isFullTable = false;
         },
         get25TableDataError(
+            state,
+            action: PayloadAction<TableDataErrorPayload>
+        ) {
+            state.error = action.payload.error;
+            state.isLoading = false;
+        },
+        removeTableDataRequest(
+            state,
+            action: PayloadAction<{movieID: number}>
+        ) {
+            state.isLoading = true;
+        },
+        removeTableDataSuccess(
+            state,
+            action: PayloadAction<{movieID: number}>
+        ) {
+            const filteredTableData = state.tableData.filter((movie) => movie.ID !== action.payload.movieID);            
+            state.tableData = filteredTableData;
+            state.isLoading = false;
+            state.error = null;
+        },
+        removeTableDataError(
             state,
             action: PayloadAction<TableDataErrorPayload>
         ) {
