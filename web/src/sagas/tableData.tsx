@@ -33,7 +33,7 @@ export const tableDataSagaBuilder = () => {
     function* addTableData(action) {
         console.log('adding data');
         console.log(action);
-        
+
         try {
             const addData = async () => {
                 try {
@@ -84,11 +84,11 @@ export const tableDataSagaBuilder = () => {
     function* removeTableData(action) {
         console.log('removing data');
         console.log(action);
-        
+
         try {
             const removeData = async () => {
                 try {
-                    const { data } = await axios.delete(url + 'movieData/'+ action.payload.movieID);
+                    const { data } = await axios.delete(url + 'movieData/' + action.payload.movieID);
                     console.log(data);
                     return data;
                 } catch (e) {

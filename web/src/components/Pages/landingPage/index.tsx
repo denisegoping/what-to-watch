@@ -48,28 +48,28 @@ const DescriptionMessage = styled.div`
 `;
 
 export const LandingPage = () => {
-    return (
-        <PageContainer>
-          <HeaderContainer>
-            <WelcomeMessage>Welcome to&nbsp;
-              <Name>What to Watch!</Name>&nbsp;
-            </WelcomeMessage>
-          </HeaderContainer>
-          <TopContainer>
-            <DescriptionMessage>
-              A website containing the latest 25 popular movies
-              submitted by you!
-            </DescriptionMessage>
-            <DescriptionMessage>
-              Scroll through the list to get 
-              inspiration for your next movie binge, edit the list
-              by adding or removing movies, and customize the list
-              by filtering by genre. Enjoy!
-            </DescriptionMessage>
-          </TopContainer>
-           <MovieTable/>
-        </PageContainer>
-    )
+  return (
+    <PageContainer>
+      <HeaderContainer>
+        <WelcomeMessage>Welcome to&nbsp;
+          <Name>What to Watch!</Name>&nbsp;
+        </WelcomeMessage>
+      </HeaderContainer>
+      <TopContainer>
+        <DescriptionMessage>
+          A website containing the latest 25 popular movies
+          submitted by you!
+        </DescriptionMessage>
+        <DescriptionMessage>
+          Scroll through the list to get
+          inspiration for your next movie binge, edit the list
+          by adding or removing movies, and customize the list
+          by filtering by genre. Enjoy!
+        </DescriptionMessage>
+      </TopContainer>
+      <MovieTable />
+    </PageContainer>
+  )
 }
 
 // add updating feature?

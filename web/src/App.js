@@ -7,7 +7,7 @@ const storeInstance = require('./configureStore.js').storeInstance;
 function App() {
   return (
     <Provider store={storeInstance}>
-      <LandingPage/>
+      <LandingPage />
     </Provider>
   );
 }

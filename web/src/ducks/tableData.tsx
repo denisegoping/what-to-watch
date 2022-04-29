@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type TableData = {
     tableData: RowData[];
@@ -55,9 +55,10 @@ const tableData = createSlice({
             state.isFullTable = true;
             state.genreList = [];
             state.tableData.forEach((movie) => {
-            if (!state.genreList.includes(movie.genre)) {
-                state.genreList.push(movie.genre);
-            }})
+                if (!state.genreList.includes(movie.genre)) {
+                    state.genreList.push(movie.genre);
+                }
+            })
             console.log(state.genreList);
         },
         getTableDataError(
@@ -86,9 +87,9 @@ const tableData = createSlice({
             state.isLoading = false;
             state.error = null;
             if (!state.genreList.includes(action.payload.rowData.genre)) {
-                    state.genreList.push(action.payload.rowData.genre);
-                }
-                console.log(state.genreList);
+                state.genreList.push(action.payload.rowData.genre);
+            }
+            console.log(state.genreList);
         },
         addTableDataError(
             state,
@@ -120,15 +121,15 @@ const tableData = createSlice({
         },
         removeTableDataRequest(
             state,
-            action: PayloadAction<{movieID: number, genre: string}>
+            action: PayloadAction<{ movieID: number, genre: string }>
         ) {
             state.isLoading = true;
         },
         removeTableDataSuccess(
             state,
-            action: PayloadAction<{movieID: number, genre: string}>
+            action: PayloadAction<{ movieID: number, genre: string }>
         ) {
-            const filteredTableData = state.tableData.filter((movie) => movie.ID !== action.payload.movieID);            
+            const filteredTableData = state.tableData.filter((movie) => movie.ID !== action.payload.movieID);
             state.tableData = filteredTableData;
             state.isLoading = false;
             state.error = null;
@@ -137,8 +138,9 @@ const tableData = createSlice({
             state.tableData.forEach((movie) => {
                 if (!state.genreList.includes(movie.genre)) {
                     state.genreList.push(movie.genre);
-                }})
-                console.log(state.genreList);
+                }
+            })
+            console.log(state.genreList);
         },
         removeTableDataError(
             state,
@@ -149,7 +151,7 @@ const tableData = createSlice({
         },
         getGenreTableDataRequest(
             state,
-            action: PayloadAction<{genre: string}>,
+            action: PayloadAction<{ genre: string }>,
         ) {
             state.isLoading = true;
         },

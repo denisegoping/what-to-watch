@@ -16,18 +16,18 @@ export const BodyContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-export function MovieTable() {   
-    
+export function MovieTable() {
+
     const [isFullHistory, setIsFullHistory] = useState(false);
     const [rowsHaveChanged, setRowsHaveChanged] = useState(false);
-    const [itemToDelete, setItemToDelete] = useState({movieID: 0, genre: ''});
+    const [itemToDelete, setItemToDelete] = useState({ movieID: 0, genre: '' });
     const [genreSearch, setGenreSearch] = useState(null);
 
     const [movieState, setMovieState] = useState('');
     const [directorState, setDirectorState] = useState('');
     const [yearState, setYearState] = useState('');
     const [genreState, setGenreState] = useState('');
-    
+
     let tableData: RowData[] = useSelector(tableDataSelectors.selectTableData);
     let genreList: string[] = useSelector(tableDataSelectors.selectGenreList);
     const [rows, setRows] = useState(tableData);
@@ -37,13 +37,13 @@ export function MovieTable() {
 
     if (isFullHistory === true) {
         requestAction = tableDataActions.getTableDataRequest();
-    } else {  
+    } else {
         requestAction = tableDataActions.get25TableDataRequest();
     }
 
-    useEffect(() => {        
+    useEffect(() => {
         setRows(tableData);
-      }, [tableData])
+    }, [tableData])
 
     useEffect(() => {
         console.log(requestAction);
@@ -53,7 +53,7 @@ export function MovieTable() {
     useEffect(() => {
         console.log(genreSearch);
         if (genreSearch) {
-            dispatch(tableDataActions.getGenreTableDataRequest({genre: genreSearch}));
+            dispatch(tableDataActions.getGenreTableDataRequest({ genre: genreSearch }));
         } else {
             dispatch(requestAction);
         }
@@ -61,13 +61,13 @@ export function MovieTable() {
 
     useEffect(() => {
         console.log(itemToDelete);
-        dispatch(tableDataActions.removeTableDataRequest({movieID: itemToDelete.movieID, genre: itemToDelete.genre}));
+        dispatch(tableDataActions.removeTableDataRequest({ movieID: itemToDelete.movieID, genre: itemToDelete.genre }));
     }, [itemToDelete]);
 
     useEffect(() => {
         console.log('updating');
         if (movieState !== '' && directorState !== '' && yearState !== '' && genreState !== '') {
-            dispatch(tableDataActions.addTableDataRequest({movieTitle: movieState, director: directorState, year: yearState, genre: genreState}));
+            dispatch(tableDataActions.addTableDataRequest({ movieTitle: movieState, director: directorState, year: yearState, genre: genreState }));
         }
         setMovieState('');
         setDirectorState('');
@@ -78,80 +78,86 @@ export function MovieTable() {
 
     return (
         <BodyContainer>
-        <Button onClick={() => {setIsFullHistory(false); setGenreSearch(null);}}
-                style={{background: "#fcf2b1", margin: "5px 5px 10px 5%"}}>
-            Latest 25 Movies
-        </Button>
-        <Button onClick={() => {setIsFullHistory(true); setGenreSearch(null);}}
-                style={{background: "#fcf2b1", margin: "5px 5px 10px 5px"}}>
-            All Movies/Edit List
-        </Button>
-        {(() => {
-            if (isFullHistory) {
-                return <div style={{ marginLeft: '5%', marginBottom: '10px', width: 300 }}><Autocomplete
-                            value={genreSearch}
-                            disablePortal={true}
-                            options={genreList}
-                            renderInput={(params) => <TextField {...params} label="Latest 25 Movies Per Genre" />}
-                            onChange={(_event, newGenre) => {setGenreSearch(newGenre)}}
-                            /></div>
-                        }
-        })()}
-        <div style={{marginLeft: '5%', marginRight: '5%'}}>
-    <TableContainer style={{maxHeight: '78vh', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
-        <Table stickyHeader>
-        <TableHead>
-            <TableRow>
-                <TableCell>Movie</TableCell>
-                <TableCell align="right">Director</TableCell>
-                <TableCell align="right">Year</TableCell>
-                <TableCell align="right">Genre</TableCell>
-                {(() => {
-                    if (isFullHistory && genreSearch === null) {
-                        return <TableCell align="right">Action</TableCell>
-                    }
-                })()}
-            </TableRow>
-        </TableHead>
-        <TableBody>
+            <Button onClick={() => { setIsFullHistory(false); setGenreSearch(null); }}
+                style={{ background: "#fcf2b1", margin: "5px 5px 10px 5%" }}>
+                Latest 25 Movies
+            </Button>
+            <Button onClick={() => { setIsFullHistory(true); setGenreSearch(null); }}
+                style={{ background: "#fcf2b1", margin: "5px 5px 10px 5px" }}>
+                All Movies/Edit List
+            </Button>
             {(() => {
-                if (isFullHistory && genreSearch === null) {
-                    return <TableRow>
-                            <TableCell style={{background: '#ffffff'}} component="th" scope="row">
-                                <TextField value={movieState} onChange={(c) => setMovieState(c.target.value)}></TextField>
-                            </TableCell>
-                            <TableCell style={{background: '#ffffff'}} align="right"><TextField value={directorState} onChange={(c) => setDirectorState(c.target.value)}></TextField></TableCell>
-                            <TableCell style={{background: '#ffffff'}} align="right"><TextField value={yearState} onChange={(c) => setYearState(c.target.value)}></TextField></TableCell>
-                            <TableCell style={{background: '#ffffff'}} align="right"><TextField value={genreState} onChange={(c) => setGenreState(c.target.value.replace(/\/+$/, '-'))}></TextField></TableCell>
-                            {(() => {
-                                if (isFullHistory && genreSearch === null) {
-                                    return <TableCell style={{background: '#ffffff'}} align="right">
-                                            <Button style={{background: '#fcf2b1', marginLeft: '10px'}} onClick={() => setRowsHaveChanged(true)}>Submit Movie</Button>
-                                            </TableCell>
-                                }
-                            })()}
-                    </TableRow>
+                if (isFullHistory) {
+                    return <div style={{ marginLeft: '5%', marginBottom: '10px', width: 300 }}><Autocomplete
+                        value={genreSearch}
+                        disablePortal={true}
+                        options={genreList}
+                        renderInput={(params) => <TextField {...params} label="Latest 25 Movies Per Genre" />}
+                        onChange={(_event, newGenre) => { setGenreSearch(newGenre) }}
+                    /></div>
                 }
             })()}
-            {rows.map((row) => (
-                <TableRow>
-                    <TableCell style={{background: '#ffffff'}} component="th" scope="row">{row.movieTitle}</TableCell>
-                    <TableCell style={{background: '#ffffff'}} align="right">{row.director}</TableCell>
-                    <TableCell style={{background: '#ffffff'}} align="right">{row.year}</TableCell>
-                    <TableCell style={{background: '#ffffff'}} align="right">{row.genre}</TableCell>
-                    {(() => {
-                        if (isFullHistory && genreSearch === null) {
-                            return <TableCell style={{background: '#ffffff'}} align="right">
-                                <Button style={{background: '#fcf2b1'}} onClick={() => setItemToDelete({movieID: row.ID, genre: row.genre})}>Remove</Button>
-                                </TableCell>
-                        }
-                    })()}
-                </TableRow>
-            ))}
-        </TableBody>
-    </Table>
-</TableContainer>
-</div>
-</BodyContainer>
+            <div style={{ marginLeft: '5%', marginRight: '5%' }}>
+                <TableContainer style={{ maxHeight: '78vh', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+                    <Table stickyHeader>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Movie</TableCell>
+                                <TableCell align="right">Director</TableCell>
+                                <TableCell align="right">Year</TableCell>
+                                <TableCell align="right">Genre</TableCell>
+                                {(() => {
+                                    if (isFullHistory && genreSearch === null) {
+                                        return <TableCell align="right">Action</TableCell>
+                                    }
+                                })()}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {(() => {
+                                if (isFullHistory && genreSearch === null) {
+                                    return <TableRow>
+                                        <TableCell style={{ background: '#ffffff' }} component="th" scope="row">
+                                            <TextField value={movieState} onChange={(c) => setMovieState(c.target.value)}></TextField>
+                                        </TableCell>
+                                        <TableCell style={{ background: '#ffffff' }} align="right">
+                                            <TextField value={directorState} onChange={(c) => setDirectorState(c.target.value)}></TextField>
+                                        </TableCell>
+                                        <TableCell style={{ background: '#ffffff' }} align="right">
+                                            <TextField value={yearState} onChange={(c) => setYearState(c.target.value)}></TextField>
+                                        </TableCell>
+                                        <TableCell style={{ background: '#ffffff' }} align="right">
+                                            <TextField value={genreState} onChange={(c) => setGenreState(c.target.value.replace(/\/+$/, '-'))}></TextField>
+                                        </TableCell>
+                                        {(() => {
+                                            if (isFullHistory && genreSearch === null) {
+                                                return <TableCell style={{ background: '#ffffff' }} align="right">
+                                                    <Button style={{ background: '#fcf2b1', marginLeft: '10px' }} onClick={() => setRowsHaveChanged(true)}>Submit Movie</Button>
+                                                </TableCell>
+                                            }
+                                        })()}
+                                    </TableRow>
+                                }
+                            })()}
+                            {rows.map((row) => (
+                                <TableRow>
+                                    <TableCell style={{ background: '#ffffff' }} component="th" scope="row">{row.movieTitle}</TableCell>
+                                    <TableCell style={{ background: '#ffffff' }} align="right">{row.director}</TableCell>
+                                    <TableCell style={{ background: '#ffffff' }} align="right">{row.year}</TableCell>
+                                    <TableCell style={{ background: '#ffffff' }} align="right">{row.genre}</TableCell>
+                                    {(() => {
+                                        if (isFullHistory && genreSearch === null) {
+                                            return <TableCell style={{ background: '#ffffff' }} align="right">
+                                                <Button style={{ background: '#fcf2b1' }} onClick={() => setItemToDelete({ movieID: row.ID, genre: row.genre })}>Remove</Button>
+                                            </TableCell>
+                                        }
+                                    })()}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+        </BodyContainer>
     )
 }
