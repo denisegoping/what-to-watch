@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node server/index.js",
     "build": "cd web && npm run build",
+    "heroku-postbuild": "npm run install-web && npm run build",
     "install-web": "cd web && npm install"
   },
   "dependencies": {

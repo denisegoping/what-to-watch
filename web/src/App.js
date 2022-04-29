@@ -1,6 +1,5 @@
 import './App.css';
-var Provider = require('react-redux');
-
+import { Provider } from 'react-redux';
 var LandingPage = require('./components/Pages/landingPage/index.tsx').LandingPage;
 const storeInstance = require('./configureStore.js').storeInstance;
 

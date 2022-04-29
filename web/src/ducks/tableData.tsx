@@ -33,6 +33,7 @@ export type TableDataErrorPayload = {
 }
 
 export type AddTableDataRequestPayload = {
+    id: number;
     rowData: RowData;
 }
 
@@ -80,9 +81,9 @@ const tableData = createSlice({
         ) {
             if (!state.isFullTable && state.tableData.length === 25) {
                 state.tableData.pop();
-                state.tableData.unshift(action.payload.rowData);
+                state.tableData.unshift({ID: action.payload.id, ...action.payload.rowData});
             } else {
-                state.tableData = [action.payload.rowData, ...state.tableData];
+                state.tableData = [{ID: action.payload.id, ...action.payload.rowData}, ...state.tableData];
             }
             state.isLoading = false;
             state.error = null;

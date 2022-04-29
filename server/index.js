@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
 const db = mysql.createConnection({
-  user: 'root',
-  host: '0.0.0.0',
-  password: 'password',
-  database: 'movies',
+  user: 'bd375097a5253a',
+  host: 'us-cdbr-east-05.cleardb.net',
+  password: '4d1318a0',
+  database: 'heroku_305fdcfca6d5da9',
 });
 
 const app = express();
@@ -74,6 +74,9 @@ app.get('/movieData/:genre', (req, res) => {
       }
     })
 })
+
+app.use(express.static('web/build'));
+app.disable('etag');
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)

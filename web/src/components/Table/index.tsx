@@ -46,18 +46,13 @@ export function MovieTable() {
     }, [tableData])
 
     useEffect(() => {
-        console.log(requestAction);
-        dispatch(requestAction);
-    }, [isFullHistory]);
-
-    useEffect(() => {
         console.log(genreSearch);
         if (genreSearch) {
             dispatch(tableDataActions.getGenreTableDataRequest({ genre: genreSearch }));
         } else {
             dispatch(requestAction);
         }
-    }, [genreSearch]);
+    }, [genreSearch, isFullHistory]);
 
     useEffect(() => {
         console.log(itemToDelete);

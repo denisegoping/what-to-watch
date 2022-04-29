@@ -51,6 +51,7 @@ export const tableDataSagaBuilder = () => {
             console.log(data);
             yield put(
                 tableDataActions.addTableDataSuccess({
+                    id: data.insertId,
                     rowData: action.payload
                 })
             );
