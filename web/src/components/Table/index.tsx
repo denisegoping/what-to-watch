@@ -3,10 +3,18 @@ import Table from '@material-ui/core/Table'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { TableBody, TableCell, TableContainer, TableRow, TableHead, TextField, Button } from '@material-ui/core';
+import { TableBody, TableCell, TableContainer, TableRow, TableHead, TextField, Button, Popper } from '@material-ui/core';
 import { RowData } from '../../ducks/tableData';
+import styled from 'styled-components';
 const tableDataSelectors = require('../../ducks/tableData.tsx').tableDataSelectors;
 var tableDataActions = require('../../ducks/tableData.tsx').tableDataActions;
+
+export const BodyContainer = styled.div`
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia;
+  margin-bottom: 10px;
+`;
 
 export function MovieTable() {   
     
@@ -69,54 +77,73 @@ export function MovieTable() {
     }, [rowsHaveChanged]);
 
     return (
-        <div>
-        <Button onClick={() => {setIsFullHistory(false); setGenreSearch(null);}}>Latest 25 Movies</Button>
-        <Button onClick={() => {setIsFullHistory(true); setGenreSearch(null);}}>All Movies/Edit List</Button>
+        <BodyContainer>
+        <Button onClick={() => {setIsFullHistory(false); setGenreSearch(null);}}
+                style={{background: "#fcf2b1", margin: "5px 5px 10px 5%"}}>
+            Latest 25 Movies
+        </Button>
+        <Button onClick={() => {setIsFullHistory(true); setGenreSearch(null);}}
+                style={{background: "#fcf2b1", margin: "5px 5px 10px 5px"}}>
+            All Movies/Edit List
+        </Button>
         {(() => {
             if (isFullHistory) {
-                return <Autocomplete
+                return <div style={{ marginLeft: '5%', marginBottom: '10px', width: 300 }}><Autocomplete
                             value={genreSearch}
-                            disablePortal
+                            disablePortal={true}
                             options={genreList}
-                            style={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Latest 25 Movies Per Genre" />}
                             onChange={(_event, newGenre) => {setGenreSearch(newGenre)}}
-                            />
+                            /></div>
                         }
         })()}
-    <TableContainer style={{maxHeight: '75vh'}}>
-        <Table stickyHeader style={{ width: '90%', alignItems: 'center'}}>
+        <div style={{marginLeft: '5%', marginRight: '5%'}}>
+    <TableContainer style={{maxHeight: '78vh', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+        <Table stickyHeader>
         <TableHead>
             <TableRow>
                 <TableCell>Movie</TableCell>
                 <TableCell align="right">Director</TableCell>
                 <TableCell align="right">Year</TableCell>
                 <TableCell align="right">Genre</TableCell>
+                {(() => {
+                    if (isFullHistory && genreSearch === null) {
+                        return <TableCell align="right">Action</TableCell>
+                    }
+                })()}
             </TableRow>
         </TableHead>
         <TableBody>
             {(() => {
                 if (isFullHistory && genreSearch === null) {
                     return <TableRow>
-                            <TableCell component="th" scope="row">
+                            <TableCell style={{background: '#ffffff'}} component="th" scope="row">
                                 <TextField value={movieState} onChange={(c) => setMovieState(c.target.value)}></TextField>
                             </TableCell>
-                            <TableCell align="right"><TextField value={directorState} onChange={(c) => setDirectorState(c.target.value)}></TextField></TableCell>
-                            <TableCell align="right"><TextField value={yearState} onChange={(c) => setYearState(c.target.value)}></TextField></TableCell>
-                            <TableCell align="right"><TextField value={genreState} onChange={(c) => setGenreState(c.target.value.replace(/\/+$/, '-'))}></TextField></TableCell>
-                            <Button onClick={() => setRowsHaveChanged(true)}>Submit Movie</Button>
+                            <TableCell style={{background: '#ffffff'}} align="right"><TextField value={directorState} onChange={(c) => setDirectorState(c.target.value)}></TextField></TableCell>
+                            <TableCell style={{background: '#ffffff'}} align="right"><TextField value={yearState} onChange={(c) => setYearState(c.target.value)}></TextField></TableCell>
+                            <TableCell style={{background: '#ffffff'}} align="right"><TextField value={genreState} onChange={(c) => setGenreState(c.target.value.replace(/\/+$/, '-'))}></TextField></TableCell>
+                            {(() => {
+                                if (isFullHistory && genreSearch === null) {
+                                    return <TableCell style={{background: '#ffffff'}} align="right">
+                                            <Button style={{background: '#fcf2b1', marginLeft: '10px'}} onClick={() => setRowsHaveChanged(true)}>Submit Movie</Button>
+                                            </TableCell>
+                                }
+                            })()}
                     </TableRow>
                 }
             })()}
             {rows.map((row) => (
                 <TableRow>
-                    <TableCell component="th" scope="row">{row.movieTitle}</TableCell>
-                    <TableCell align="right">{row.director}</TableCell>
-                    <TableCell align="right">{row.year}</TableCell>
-                    <TableCell align="right">{row.genre}</TableCell>
+                    <TableCell style={{background: '#ffffff'}} component="th" scope="row">{row.movieTitle}</TableCell>
+                    <TableCell style={{background: '#ffffff'}} align="right">{row.director}</TableCell>
+                    <TableCell style={{background: '#ffffff'}} align="right">{row.year}</TableCell>
+                    <TableCell style={{background: '#ffffff'}} align="right">{row.genre}</TableCell>
                     {(() => {
                         if (isFullHistory && genreSearch === null) {
-                            return <Button onClick={() => setItemToDelete({movieID: row.ID, genre: row.genre})}>Remove</Button>
+                            return <TableCell style={{background: '#ffffff'}} align="right">
+                                <Button style={{background: '#fcf2b1'}} onClick={() => setItemToDelete({movieID: row.ID, genre: row.genre})}>Remove</Button>
+                                </TableCell>
                         }
                     })()}
                 </TableRow>
@@ -125,5 +152,6 @@ export function MovieTable() {
     </Table>
 </TableContainer>
 </div>
+</BodyContainer>
     )
 }
