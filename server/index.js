@@ -1,16 +1,15 @@
 const express = require('express');
-const port = 5000;
 const cors = require('cors');
 const mysql = require('mysql');
 const db = mysql.createConnection({
   user: 'root',
-  host: 'localhost',
+  host: '0.0.0.0',
   password: 'password',
   database: 'movies',
 });
 
 const app = express();
-const HTTP_PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 

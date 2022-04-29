@@ -3,7 +3,8 @@ import axios from "axios";
 
 const tableDataActions = require("../ducks/tableData.tsx").tableDataActions;
 
-const url = 'http://localhost:5000/';
+// const url = 'http://localhost:5000/';
+const url = 'https://what-to-watch-movies.herokuapp.com/'
 
 export const tableDataSagaBuilder = () => {
 

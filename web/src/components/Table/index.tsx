@@ -2,10 +2,10 @@ import React from 'react';
 import Table from '@material-ui/core/Table'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import { TableBody, TableCell, TableContainer, TableRow, TableHead, TextField, Button, Popper } from '@material-ui/core';
+import { TableBody, TableCell, TableContainer, TableRow, TableHead, TextField, Button } from '@material-ui/core';
 import { RowData } from '../../ducks/tableData';
 import styled from 'styled-components';
+var { useSelector, useDispatch } = require('react-redux');
 const tableDataSelectors = require('../../ducks/tableData.tsx').tableDataSelectors;
 var tableDataActions = require('../../ducks/tableData.tsx').tableDataActions;
 
