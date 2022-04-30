@@ -37,6 +37,15 @@ export type AddTableDataRequestPayload = {
     rowData: RowData;
 }
 
+export type RemoveTableDataPayload = {
+    movieID: number;
+    genre: string;
+}
+
+export type GetGenreTableDataRequestPayload = {
+    tableData: [];
+}
+
 const tableData = createSlice({
     name: 'tableData',
     initialState,
@@ -60,7 +69,6 @@ const tableData = createSlice({
                     state.genreList.push(movie.genre);
                 }
             })
-            console.log(state.genreList);
         },
         getTableDataError(
             state,
@@ -81,16 +89,15 @@ const tableData = createSlice({
         ) {
             if (!state.isFullTable && state.tableData.length === 25) {
                 state.tableData.pop();
-                state.tableData.unshift({ID: action.payload.id, ...action.payload.rowData});
+                state.tableData.unshift({ ID: action.payload.id, ...action.payload.rowData });
             } else {
-                state.tableData = [{ID: action.payload.id, ...action.payload.rowData}, ...state.tableData];
+                state.tableData = [{ ID: action.payload.id, ...action.payload.rowData }, ...state.tableData];
             }
             state.isLoading = false;
             state.error = null;
             if (!state.genreList.includes(action.payload.rowData.genre)) {
                 state.genreList.push(action.payload.rowData.genre);
             }
-            console.log(state.genreList);
         },
         addTableDataError(
             state,
@@ -122,13 +129,13 @@ const tableData = createSlice({
         },
         removeTableDataRequest(
             state,
-            action: PayloadAction<{ movieID: number, genre: string }>
+            action: PayloadAction<RemoveTableDataPayload>
         ) {
             state.isLoading = true;
         },
         removeTableDataSuccess(
             state,
-            action: PayloadAction<{ movieID: number, genre: string }>
+            action: PayloadAction<RemoveTableDataPayload>
         ) {
             const filteredTableData = state.tableData.filter((movie) => movie.ID !== action.payload.movieID);
             state.tableData = filteredTableData;
@@ -141,7 +148,6 @@ const tableData = createSlice({
                     state.genreList.push(movie.genre);
                 }
             })
-            console.log(state.genreList);
         },
         removeTableDataError(
             state,
@@ -152,7 +158,7 @@ const tableData = createSlice({
         },
         getGenreTableDataRequest(
             state,
-            action: PayloadAction<{ genre: string }>,
+            action: PayloadAction<GetGenreTableDataRequestPayload>,
         ) {
             state.isLoading = true;
         },

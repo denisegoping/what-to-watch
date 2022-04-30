@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-// import { tableDataReducer } from './ducks/tableData';
 const tableDataReducer = require('./ducks/tableData.tsx').tableDataReducer;
 const rootSaga = require('./rootSaga.ts').rootSaga;
 

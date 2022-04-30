@@ -1,9 +1,8 @@
 import { put, takeEvery, call } from "redux-saga/effects";
 import axios from "axios";
 
-const tableDataActions = require("../ducks/tableData.tsx").tableDataActions;
+var tableDataActions = require("../ducks/tableData.tsx").tableDataActions;
 
-// const url = 'http://localhost:5000/';
 const url = 'https://what-to-watch-movies.herokuapp.com/'
 
 export const tableDataSagaBuilder = () => {
@@ -20,7 +19,6 @@ export const tableDataSagaBuilder = () => {
                 }
             }
             const data = yield call(getData);
-            console.log(data);
             yield put(
                 tableDataActions.getTableDataSuccess({
                     tableData: data
@@ -32,15 +30,10 @@ export const tableDataSagaBuilder = () => {
     }
 
     function* addTableData(action) {
-        console.log('adding data');
-        console.log(action);
-
         try {
             const addData = async () => {
                 try {
-                    console.log('posting');
                     const { data } = await axios.post(url + 'movieData', action.payload);
-                    console.log(data);
                     return data;
                 } catch (e) {
                     console.log(e);
@@ -48,7 +41,6 @@ export const tableDataSagaBuilder = () => {
                 }
             }
             const data = yield call(addData);
-            console.log(data);
             yield put(
                 tableDataActions.addTableDataSuccess({
                     id: data.insertId,
@@ -72,7 +64,6 @@ export const tableDataSagaBuilder = () => {
                 }
             }
             const data = yield call(getData);
-            console.log(data);
             yield put(
                 tableDataActions.get25TableDataSuccess({
                     tableData: data
@@ -84,14 +75,10 @@ export const tableDataSagaBuilder = () => {
     }
 
     function* removeTableData(action) {
-        console.log('removing data');
-        console.log(action);
-
         try {
             const removeData = async () => {
                 try {
                     const { data } = await axios.delete(url + 'movieData/' + action.payload.movieID);
-                    console.log(data);
                     return data;
                 } catch (e) {
                     console.log(e);
@@ -99,7 +86,6 @@ export const tableDataSagaBuilder = () => {
                 }
             }
             const data = yield call(removeData);
-            console.log(data);
             yield put(
                 tableDataActions.removeTableDataSuccess(
                     action.payload
@@ -122,7 +108,6 @@ export const tableDataSagaBuilder = () => {
                 }
             }
             const data = yield call(getData);
-            console.log(data);
             yield put(
                 tableDataActions.getGenreTableDataSuccess({
                     tableData: data
