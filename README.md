@@ -10,8 +10,8 @@ Click on the **All movies/edit list** button to customize the list. You can ente
 the buttons. This section shows the full history of movies that are in the database, as opposed to just the most recent 25, so you can revise
 it accordingly.
 
-~~ pic of history~~
+<img width="1436" alt="image" src="https://user-images.githubusercontent.com/77180971/167945806-529364c1-96c6-4b72-ad54-247d66dd0fcb.png">
 
 Lastly, if you're set on the genre you want to watch, you can filter by genre and get the 25 most recently suggested movies in that genre.
 
-~~ pic of genre ~~
+<img width="1434" alt="image" src="https://user-images.githubusercontent.com/77180971/167945900-9c22dcc9-0262-44c4-9796-46daf4a70e06.png">
