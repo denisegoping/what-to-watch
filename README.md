@@ -1,5 +1,7 @@
 # what-to-watch
 
+*Try it out! https://what-to-watch-movies.herokuapp.com/*
+
 Are you ever stuck trying to decide what movie to watch for movie night? What To Watch is a community movie recommendation table, listing
 the 25 most recently suggested movies. Users can edit this list by adding their own movie picks, or removing any of the older ones, so 
 the list is ever-changing! 
